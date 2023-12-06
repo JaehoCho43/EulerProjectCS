@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ProjectEuler
 {
@@ -339,4 +340,84 @@ namespace ProjectEuler
 			return set.Count;
 		}
     }
+	public class Problem30 : Problem
+    {
+		// Find the sum of all the numbers that can be written as the sum of fifth powers of their digits?
+		public override long Solve()
+		{
+			// 9^5 = 59049
+			// As a result, the sum of 6 fifth powers can cover at most 59049 * 6 = 354294
+			HashSet<int> set = [];
+		
+			for (int i = 10; i < 354295; i++)
+			{
+				if (i.ToString().Select(ch => (int) BigInteger.Pow(ch - '0', 5)).Sum() ==  i)
+				{
+					set.Add(i);
+				}
+			}
+
+			return set.Sum();
+		}
+    }
+
+	public class Problem34 : Problem
+    {
+		// Find the sum of all numbers which are equal to the sum of the factorial of their digits.
+		public override long Solve()
+		{
+			// 9! = 362880
+			// As a result, the sum of 7 factorials can cover at most 362880 * 7 = 2540160
+			HashSet<int> set = [];
+		
+			for (int i = 10; i < 2540161; i++)
+			{
+				if (i.ToString().Select(ch => ch - '0').Select(n => Enumerable.Range(1,n).Aggregate(1, (x,y) => x * y)).Sum() ==  i)
+				{
+					set.Add(i);
+				}
+			}
+
+			return set.Sum();
+		}
+    }
+
+	public class Problem48 : Problem
+    {
+		// Find the last ten digits of the sum of self-powers from 1 to 1000
+		public override long Solve()
+		{
+			var divisor = BigInteger.Pow(10,10);
+			return (long) Enumerable.Range(1,1000).Aggregate((BigInteger)0, (x,y) => (x + BigInteger.Pow((BigInteger) y,y))%divisor);
+		}
+    }
+
+	public class Problem78 : Problem
+    {
+		public override long Solve()
+		{
+			// Sum(p(n)X^n) = Prod(1/(1-x^n))
+			// From Euler's Pentagonal theorem, we have the recurrence relation
+			var oneMillion = 1000000;
+			Dictionary<int, BigInteger> dp = [];
+			dp[0] = 1;
+			dp[1] = 1;
+			dp[2] = 2;
+			int i = 3;
+			while (true)
+			{
+				BigInteger res = 0;
+				for (int k = 1; k*(3*k - 1) / 2 <= i; k++)
+				{
+					var sign = (k%2 == 0)?(-1):1;
+					res = (res + sign * dp[i - k* (3*k - 1) / 2])%oneMillion; 
+					if (i - k* (3*k + 1) / 2 >= 0) res = (res + sign * dp[i - k* (3*k + 1) / 2])%oneMillion; 
+				}
+				if (res == 0) return i;
+				dp[i] = res;
+				i++;
+			}
+		}
+    }
+
 }
