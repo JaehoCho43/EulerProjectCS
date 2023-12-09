@@ -87,7 +87,7 @@
             return GCD(N2, N1 % N2);
         }
 
-        public static long LCM(long N1, long N2) => N1/ (GCD(N1, N2)) * N2;
+        public static long LCM(long N1, long N2) => N1/ GCD(N1, N2) * N2;
 
         public static List<int> Primes(int N) 
         {
