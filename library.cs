@@ -120,5 +120,10 @@
         }
         public static int NthPrime(int N) => Primes(N*N)[N - 1];
 
+        public static IEnumerable<IEnumerable<T>> Permutation<T>(IEnumerable<T> enumerable, int len)
+        {
+            if (len == 1) return enumerable.Select(e => new T[] {e});
+            return Permutation(enumerable, len - 1).SelectMany(perm => enumerable.Where(e => !perm.Contains(e)), (perm, e) => perm.Concat(new T[] {e}));
+        }
     }
 }
