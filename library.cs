@@ -1,4 +1,6 @@
-﻿namespace ProjectEuler
+﻿using System.Numerics;
+
+namespace ProjectEuler
 {
     class Helper
     {
@@ -125,5 +127,7 @@
             if (len == 1) return enumerable.Select(e => new T[] {e});
             return Permutation(enumerable, len - 1).SelectMany(perm => enumerable.Where(e => !perm.Contains(e)), (perm, e) => perm.Concat(new T[] {e}));
         }
+
+        public static BigInteger Choose(int n, int r) => Enumerable.Range(1, r).Aggregate((BigInteger) 1, (prod, i) => prod * (n - r + i) / i);
     }
 }

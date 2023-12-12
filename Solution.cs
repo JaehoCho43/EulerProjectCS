@@ -566,7 +566,23 @@ namespace ProjectEuler
 		}
     }
 
-		public class Problem67 : Problem
+	public class Problem53 : Problem
+    {
+		// How many, not necessarily distinct, values of "n choose r" for 1<=n<=100, are greater than one-million?
+		public override string Solve() => Enumerable.Range(1,100)
+		.Select(n => Enumerable.Range(0,n+1).Where(r => Helper.Choose(n,r) > 1000000).Count())
+		.Sum()
+		.ToString();
+    }
+
+	public class Problem56 : Problem
+    {
+		// Considering natural numbers of the form a^b, where a,b < 100, what is the maximum digital sum?
+		public override string Solve() => Enumerable.Range(1,99)
+		.Select(a => Enumerable.Range(1,99).Select(b => BigInteger.Pow(a,b).ToString().Aggregate(0, (sum, s) => sum + (s - '0'))).Max()).Max().ToString();
+    }
+
+	public class Problem67 : Problem
 	{
 		// Find the maximum total from top to bottom of the triangle below:
 		public override string Solve()
@@ -583,6 +599,12 @@ namespace ProjectEuler
 			}
 			return dp[(0, 0)].ToString();
 		}
+	}
+
+	public class Problem69 : Problem
+	{
+		// Find the value n <= 1000000 where n/phi(n) is a maximum
+		public override string Solve() => (2*3*5*7*11*13*17).ToString();
 	}
 
 	public class Problem76 : Problem
@@ -654,5 +676,11 @@ namespace ProjectEuler
 			}
 			return dp[(0,0)].ToString();
         }
+    }
+
+	public class Problem97: Problem
+	{
+		//Find the last ten digits of this prime number 28433 * 2^7830457 + 1
+        public override string Solve() => ((28433 * BigInteger.Pow(2, 7830457) + 1)%BigInteger.Pow(10,10)).ToString();
     }
 }
