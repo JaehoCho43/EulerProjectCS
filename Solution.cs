@@ -482,6 +482,52 @@ namespace ProjectEuler
 		}
     }
 
+	public class Problem35 : Problem
+    {
+		// How many circular primes are there below one million?
+		public override string Solve()
+		{
+			HashSet<int> primes = [.. Helper.Primes(1000000)];
+			static List<int> Rotations(int n)
+			{
+				List<int> res = [];
+				int newElement = n;
+				int logn = (int) Math.Log10(n); 
+				int pow10 = (int) BigInteger.Pow(10, logn);
+				while (!res.Contains(newElement))
+				{
+					res.Add(newElement);
+					int lastDigit = newElement%10, others = newElement/10;
+					newElement = others + lastDigit * pow10;
+				}
+				return res;
+			}
+
+			return Enumerable.Range(1,1000000).Where(n => Rotations(n).All(primes.Contains)).Count().ToString();
+
+		}
+    }
+
+		public class Problem36 : Problem
+    {
+		// Find the sum of all numbers, less than one million, which are palindromic in base 10 and base 2
+
+		public override string Solve()
+		{
+			static bool IsPalindromeBase2(int n)
+			{
+				var base2CharArray = Convert.ToString(n, 2).ToList();
+				var base2CharArrayRev = Convert.ToString(n, 2).ToList();
+				base2CharArrayRev.Reverse();
+
+				return base2CharArray.SequenceEqual(base2CharArrayRev);
+			}
+
+			return Enumerable.Range(1,1000000 - 1).Where(n => Helper.IsPalindrome(n) && IsPalindromeBase2(n)).Sum().ToString();
+			
+		}
+    }
+
 	public class Problem39 : Problem
     {
 		// For which value of p <= 1000 is the number of solutions?
@@ -519,6 +565,25 @@ namespace ProjectEuler
 			return Enumerable.Range(1,1000).Aggregate((BigInteger)0, (x,y) => (x + BigInteger.Pow((BigInteger) y,y))%divisor).ToString();
 		}
     }
+
+		public class Problem67 : Problem
+	{
+		// Find the maximum total from top to bottom of the triangle below:
+		public override string Solve()
+		{
+			List<List<int>> table = File.ReadAllLines("0067_triangle.txt").Select(ln => ln.Split(' ').Select(int.Parse).ToList()).ToList();
+
+			Dictionary<(int, int), int> dp = [];
+			for (int r = table.Count - 1; r >= 0; r--)
+			{
+				for (int c = 0; c <= r; c++)
+				{
+					dp[(r, c)] = table[r][c] + Math.Max(dp.GetValueOrDefault((r + 1, c), 0), dp.GetValueOrDefault((r + 1, c + 1), 0));
+				}
+			}
+			return dp[(0, 0)].ToString();
+		}
+	}
 
 	public class Problem76 : Problem
     {
