@@ -30,7 +30,7 @@ namespace ProjectEuler
             return true;
         }
 
-        public static Dictionary<long, long> getPrimeFactorization(long N)
+        public static Dictionary<long, long> GetPrimeFactorization(long N)
         {
             Dictionary<long, long> factors = [];
 

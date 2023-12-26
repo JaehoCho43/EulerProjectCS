@@ -50,7 +50,7 @@ namespace ProjectEuler
 		{
 			const long N = 600851475143;
 
-			return Helper.getPrimeFactorization(N).Keys.Max().ToString();
+			return Helper.GetPrimeFactorization(N).Keys.Max().ToString();
 		}
 	}
 
@@ -201,7 +201,7 @@ namespace ProjectEuler
 			while (true)
 			{
 				var triangleNumber = n * (n + 1) / 2;
-				if (Helper.getPrimeFactorization(triangleNumber)
+				if (Helper.GetPrimeFactorization(triangleNumber)
 					.Values
 					.Aggregate(1, (prev, m) => prev * ((int)m + 1)) > 500
 					) return triangleNumber.ToString();
@@ -383,7 +383,7 @@ namespace ProjectEuler
         // Find the value of d < 1000 for which contains the longest recurring cycle in its decimal fraction part.
         public override string Solve()
         {
-            int CycleLength(int n)
+            static int CycleLength(int n)
 			{
 				Dictionary<int, int> lastSeenAt = [];
 				lastSeenAt[1] = 1;
@@ -458,6 +458,26 @@ namespace ProjectEuler
 			}
 
 			return set.Sum().ToString();
+		}
+    }
+
+	public class Problem31 : Problem
+    {
+		// Coins = 1,2,5,10,20,50,100,200
+		// How many different ways can 200 be made using any number of coins?
+		public override string Solve()
+		{
+			List<int> coins = [1,2,5,10,20,50,100,200];
+			List<int> dp = Enumerable.Repeat(0,201).ToList();
+			dp[0] = 1;
+			foreach (int coin in coins)
+			{
+				for (int i = coin; i < 201; i++)
+				{
+					dp[i] += dp[i - coin];
+				}
+			}
+			return dp[200].ToString();
 		}
     }
 
